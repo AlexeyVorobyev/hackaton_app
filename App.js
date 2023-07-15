@@ -1,7 +1,9 @@
-import React from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View, Pressable,Image, TouchableOpacity } from 'react-native';
 import { Button } from '../hackaton_app/components/Button/Button';
 import { Profile } from './components/Profile/Profile';
+import { Shop } from './components/Shop/Shop';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const Page1 = () => {
@@ -16,12 +18,6 @@ const Page2 = () => {
   )
 }
 
-const Page3 = () => {
-  return (
-    <Text>3</Text>
-  )
-}
-
 export default function App() {
 
   const [router,setRouter] = React.useState([true,false,false,false])
@@ -32,30 +28,22 @@ export default function App() {
       <View style={styles.body}>
         {router[0] && <Page1/>}
         {router[1] && <Page2/>}
-        {router[2] && <Page3/>}
+        {router[2] && <Shop/>}
         {router[3] && <Profile/>}
       </View>
       <View style={styles.navigation}>
-        <Button 
-          styleButton={styles.button}
-          title=""
-          onPress={() => setRouter([true,false,false,false])}
-        />
-        <Button 
-          styleButton={styles.button}
-          title=""
-          onPress={() => setRouter([false,true,false,false])}
-        />
-        <Button 
-          styleButton={styles.button}
-          title=""
-          onPress={() => setRouter([false,false,true,false])}
-        />
-        <Button 
-          styleButton={styles.button}
-          title=""
-          onPress={() => setRouter([false,false,false,true])}
-        />
+        <TouchableOpacity style={styles.button} onPress={() => setRouter([true,false,false,false])}>
+          <Image source={require('./assets/icons/home.png')} style={styles.buttonImg} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => setRouter([false,true,false,false])}>
+          <Image source={require('./assets/icons/train.png')} style={styles.buttonImg} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => setRouter([false,false,true,false])}>
+          <Image source={require('./assets/icons/shop.png')} style={styles.buttonImg} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => setRouter([false,false,false,true])}>
+          <Image source={require('./assets/icons/user.png')} style={styles.buttonImg} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -65,16 +53,25 @@ const styles = StyleSheet.create({
   container: {
     width:"100%",
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
   },
   navigation: {
     flex:1.4,
-    padding:20,
+    paddingLeft:25,
+    paddingRight:25,
+    paddingTop:10,
+    paddingBottom:10,
     width:"100%",
-    backgroundColor:'#000',
     flexDirection:"row",
-    gap:20,
+    justifyContent:'space-between',
+    shadowColor:"#000",
+    shadowOffset:{
+        width:0,
+        height:3,
+    },
+    shadowOpacity:0.3,
+    shadowRadius:10,
+    elevation:10,
   },
   body: {
     width:"100%",
@@ -91,13 +88,12 @@ const styles = StyleSheet.create({
     flex:1,
   },
   button: {
-    width:64,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'white',
+    flex:0.2,
   },
+  buttonImg: {
+    width:50,
+    height:50,
+  }
 });

@@ -3,7 +3,7 @@ import { Button } from '../Button/Button';
 import { CustomText } from '../CustomText/CustomText';
 
 
-const Profile = () => {
+const Shop = () => {
 
     // React.useEffect(() => {
     //     fetch('https://reqres.in/api/users')
@@ -19,33 +19,18 @@ const Profile = () => {
     //     })
     // },[])
 
+    shopCardsData = []
+
     return (
       <>
       <View style={styles.ProfileHeader}>
-        <Text style={styles.profText}>Профиль</Text>
+        <Text style={styles.profText}>Магазин</Text>
         <Image
             source={require('./assets/rzd.jpg')}
         />
       </View>
       <View style={styles.ProfileBody}>
-        <View style={styles.CardHuman}>
-            <View style={styles.head_div}>
-
-            </View>
-            <Text style={styles.name}>Иван Попов</Text>
-            <Button 
-                styleButton={styles.button}
-                title="Мои поездки"
-            />
-            <Button
-                styleButton={styles.button}
-                title="Билеты"
-            />
-            <Button
-                styleButton={styles.button}
-                title="Мои заказы"
-            />
-        </View>
+        
       </View>
       </>
     )
@@ -72,6 +57,7 @@ const styles = StyleSheet.create({
     ProfileBody: {
         width:"100%",
         flex:0.93,
+        padding:10,
     },
     CardHuman:{
         flex:1,
@@ -124,4 +110,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export {Profile}
+export {Shop}
