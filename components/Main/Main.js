@@ -19,28 +19,28 @@ const Main= () => {
                     <Text style={styles.cardHeader}>Где провести лето?</Text>
                     <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
                     <TouchableOpacity style={styles.button}>
-                        <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
+                        <Image source={require('./assets/arrow.png')} style={styles.buttonImg} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.card}>
                     <Text style={styles.cardHeader}>Где провести лето?</Text>
                     <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
                     <TouchableOpacity style={styles.button}>
-                        <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
+                        <Image source={require('./assets/arrow.png')} style={styles.buttonImg} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.card}>
                     <Text style={styles.cardHeader}>Где провести лето?</Text>
                     <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
                     <TouchableOpacity style={styles.button}>
-                        <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
+                        <Image source={require('./assets/arrow.png')} style={styles.buttonImg} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.card}>
                     <Text style={styles.cardHeader}>Где провести лето?</Text>
                     <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
                     <TouchableOpacity style={styles.button}>
-                        <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
+                        <Image source={require('./assets/arrow.png')}  style={styles.buttonImg} />
                     </TouchableOpacity>
                 </View>
             </View>

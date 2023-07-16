@@ -7,7 +7,7 @@ import { Registration } from './components/Registration/Registration';
 import { Main } from './components/Main/Main';
 import { Train } from './components/Train/Train';
 
-const Authentificated = () => {
+const Authentificated = ({userId}) => {
 
   const [router,setRouter] = React.useState([true,false,false,false])
 
@@ -16,8 +16,8 @@ const Authentificated = () => {
     <View style={styles.body}>
         {router[0] && <Main/>}
         {router[1] && <Train/>}
-        {router[2] && <Shop/>}
-        {router[3] && <Profile/>}
+        {router[2] && <Shop userId={userId} setRouter={setRouter}/>}
+        {router[3] && <Profile userId={userId}/>}
       </View>
       <View style={styles.navigation}>
         <TouchableOpacity style={styles.button} onPress={() => setRouter([true,false,false,false])}>
@@ -39,25 +39,28 @@ const Authentificated = () => {
 
 export default function App() {
 
-  const [isAuthentificated,setAuthentificate] = React.useState(false)
-  const [isRegistr,setRegistr] = React.useState(false)
+  const [isAuthentificated,setAuthentificate] = React.useState(false);
+  const [isRegistr,setRegistr] = React.useState(false);
+  const [userId,setUserId] = React.useState(undefined);
 
   return (
     <View style={styles.container}>
       <View style={styles.upper}/>
-      {true  && <Authentificated/>}
-      {/* {!isAuthentificated && <>
+      {isAuthentificated  && <Authentificated userId={userId}/>}
+      {!isAuthentificated && <>
         {!isRegistr && <Authentification 
           isAuthentificated={isAuthentificated} 
           setAuthentificate={setAuthentificate}
           setRegistr={setRegistr}
+          setUserId={setUserId}
         />}
         {isRegistr && <Registration 
           isAuthentificated={isAuthentificated} 
           setAuthentificate={setAuthentificate}
           setRegistr={setRegistr}
+          setUserId={setUserId}
         />}
-      </>} */}
+      </>}
     </View>
   );
 }

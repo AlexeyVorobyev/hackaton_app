@@ -1,51 +1,59 @@
-import { StyleSheet, Text, View,Pressable,Image } from 'react-native';
+import { StyleSheet, Text, View,Pressable,Image,TouchableOpacity, ScrollView } from 'react-native';
 import { Button } from '../Button/Button';
 import { CustomText } from '../CustomText/CustomText';
+import React from 'react';
+import { Orders } from '../Orders/Orders';
 
 
-const Profile = () => {
+const Profile = ({userId}) => {
 
-    // React.useEffect(() => {
-    //     fetch('https://reqres.in/api/users')
-    //     .then(res => res.json())
-    //     .then(json => {
-    //         setUsers(json.data);
-    //         setLoading(false);
-    //     })
-    //     .catch(err => {
-    //         setLoading(true);
-    //         console.log(err);
-    //         alert("Ошибка при получении пользователя.");
-    //     })
-    // },[])
+    const [userData,setUserData] = React.useState([])
+
+    const [router,setRouter] = React.useState([true,false,false,false,false])
+
+    const signUpApi = async (userId) => {
+        try {
+            const response = await fetch(`http://10.2.0.59:8101/api/users/me/${userId}`)
+            const json = await response.json();
+            setUserData(json);
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    React.useEffect(() => {
+        signUpApi(userId)
+    },[])
 
     return (
       <>
       <View style={styles.ProfileHeader}>
         <Text style={styles.profText}>Профиль</Text>
-        <Image
-            source={require('./assets/rzd.jpg')}
-        />
       </View>
       <View style={styles.ProfileBody}>
-        <View style={styles.CardHuman}>
+        {router[0] && <View style={styles.CardHuman}>
             <View style={styles.head_div}>
 
             </View>
-            <Text style={styles.name}>Иван Попов</Text>
-            <Button 
-                styleButton={styles.button}
-                title="Мои поездки"
-            />
-            <Button
-                styleButton={styles.button}
-                title="Билеты"
-            />
-            <Button
-                styleButton={styles.button}
-                title="Мои заказы"
-            />
-        </View>
+            <Text style={styles.name}>{userData.fullName}</Text>
+            <TouchableOpacity style={styles.button}>
+                <Text style={styles.loginText}>Мои поездки</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+                <Text style={styles.loginText}>Билеты</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => setRouter([false,false,false,true,false])}>
+                <Text style={styles.loginText}>Мои заказы</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+                <Text style={styles.loginText}>Персональные акции</Text>
+            </TouchableOpacity>
+        </View>}
+        {router[3] && <View>
+            <ScrollView>
+                <Orders userId={userId}></Orders>
+            </ScrollView>
+        </View>}
       </View>
       </>
     )

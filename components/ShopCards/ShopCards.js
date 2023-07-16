@@ -2,9 +2,20 @@ import { StyleSheet, Text, View,Pressable,Image,TouchableOpacity } from 'react-n
 import React from 'react';
 
 
-const ShopCards = ({data,arrAmount,setAmount,calculatePrice}) => {
+const ShopCards = ({data,addCardElem,removeCardElem,updateCardElem,shopCardsDataInProcess}) => {
 
     const ShopCard = (info,index) => {
+
+        const [amount,setAmount] = React.useState(0)
+
+        React.useEffect(() => {
+            res = undefined;
+            for (let i = 0; i < shopCardsDataInProcess.length;i++) {
+                if (shopCardsDataInProcess[i].dish.id == info.id) res = shopCardsDataInProcess[i]
+            }
+            if (res != undefined) setAmount(res.amount)
+        },[shopCardsDataInProcess]) 
+        
         return(
             <View style={styles.card} key={info.id} >
                 <View style={styles.cardWrap_1}>
@@ -19,16 +30,28 @@ const ShopCards = ({data,arrAmount,setAmount,calculatePrice}) => {
                         </View>
                         <View style={styles.cardWrap_5}>
                             <View style={styles.cardWrap_6}>
-                                {arrAmount[index] != 0 && <TouchableOpacity style={styles.button} onPress={() => 
+                                {amount != 0 && <TouchableOpacity style={styles.button} onPress={() => 
                                 {
-                                    calculatePrice(index,-1);
+                                    if (amount == 1) {
+                                        removeCardElem(info.id);
+                                    }
+                                    else {
+                                        updateCardElem(info.id,amount - 1);
+                                    }
+                                    setAmount(amount-1)
                                 }}>
                                     <Image source={require('./assets/minus.png')} alt='hovno' style={styles.buttonImg}/>
                                 </TouchableOpacity>}
-                                {arrAmount[index] != 0 && <Text style={styles.cardAmount}>{arrAmount[index]}</Text>}
+                                {amount != 0 && <Text style={styles.cardAmount}>{amount}</Text>}
                                 <TouchableOpacity style={styles.button} onPress={() => 
                                 {
-                                    calculatePrice(index,1);
+                                    if (amount == 0) {
+                                        addCardElem(info.id);
+                                    }
+                                    else {
+                                        updateCardElem(info.id, amount + 1);
+                                    }
+                                    setAmount(amount+1)
                                 }}>
                                     <Image source={require('./assets/plus.png')} alt='hovno' style={styles.buttonImg} />
                                 </TouchableOpacity>

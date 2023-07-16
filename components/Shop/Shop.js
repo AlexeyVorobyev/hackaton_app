@@ -4,10 +4,10 @@ import { ShopCards } from '../ShopCards/ShopCards';
 import { ScrollView } from 'react-native';
 
 
-const Shop = () => {
+const Shop = ({userId,setRouter}) => {
 
     const [shopCardsData,setShopCardsData] = React.useState([]);
-    const [arrAmount,setAmount] = React.useState([]);
+    const [shopCardsDataInProcess,setShopCardsDataInProcess] = React.useState([]);
     const [price,setPrice] = React.useState(0);
 
     const getDishesApi = async () => {
@@ -15,40 +15,106 @@ const Shop = () => {
             const response = await fetch('http://10.2.0.59:8101/api/dish');
             const json = await response.json();
             setShopCardsData(json);
-            setAmount(json.map(() => 0));
         } catch (error) {
             alert(error);
         }
     };
 
-    const calculatePrice = (index,val) => {
-        doubler = arrAmount.map(x => x);
-        doubler[index]+=val;
-        setAmount(doubler)
+    const calculatePrice = async (items) => {
         let sum = 0;
-        for (let i = 0; i < shopCardsData.length;i++) sum+=shopCardsData[i].price*doubler[i]
-        setPrice(sum)
+        for (let i = 0; i < items.length;i++) {
+            sum+=items[i].amount*items[i].dish.price
+        }
+        setPrice(sum.toFixed(2));
     }
 
+    const getCardsData = async () => {
+        try {
+            const response = await fetch(`http://10.2.0.59:8101/api/users/${userId}/card`);
+            const json = await response.json();
+            setShopCardsDataInProcess(json.items)
+            calculatePrice(json.items)
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const addCardElem = async (dishId) => {
+        try {
+            const response = await fetch(`http://10.2.0.59:8101/api/users/${userId}/card/add/${dishId}`,{
+                method:'post',
+            });
+            getCardsData()
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const createCard = async () => {
+        try {
+            const response = await fetch(`http://10.2.0.59:8101/api/users/${userId}/card/create`,{
+                method:'post',
+            });
+            getCardsData()
+            setRouter([false,false,false,true])
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const removeCardElem = async (dishId) => {
+        try {
+            const response = await fetch(`http://10.2.0.59:8101/api/users/${userId}/card/remove/${dishId}`,{
+                method:'post',
+            });
+            getCardsData()
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const updateCardElem = async (dishId,amount) => {
+        try {
+            const response = await fetch(`http://10.2.0.59:8101/api/users/${userId}/card/update/${dishId}`,{
+                method:'post',
+                body:JSON.stringify({amount:amount}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            getCardsData()
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     React.useEffect(() =>{
-        getDishesApi()
+        getDishesApi();
+        getCardsData();
     },[])
 
     return (
       <>
       <View style={styles.ProfileHeader}>
         <Text style={styles.profText}>Магазин</Text>
-        <Image source={require('./assets/rzd.jpg')}/>
       </View>
       <View style={styles.ProfileBody}>
         <ScrollView style={styles.scroll}>
             <View style={styles.wrapper}>
-                <ShopCards data={shopCardsData} arrAmount={arrAmount} setAmount={setAmount} calculatePrice={calculatePrice}/>
+                <ShopCards 
+                    data={shopCardsData} 
+                    addCardElem={addCardElem}
+                    removeCardElem={removeCardElem}
+                    updateCardElem={updateCardElem}   
+                    shopCardsDataInProcess={shopCardsDataInProcess}
+                />
             </View>
         </ScrollView>
       </View>
       <View style={styles.buttonZone}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+            createCard();
+        }}>
             <Text style={styles.buttonText}>Купить</Text>
             <Text style={styles.buttonText}>{Math.round(price,2)} Р</Text>
         </TouchableOpacity>

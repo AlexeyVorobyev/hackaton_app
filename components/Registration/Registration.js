@@ -10,20 +10,39 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const Registration = ({isAuthentificated,setAuthentificate,setRegistr}) => {
+const Registration = ({isAuthentificated,setAuthentificate,setRegistr,setUserId}) => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
 
+    const getToken = async (token) => {
+      try{
+          const response = await fetch('http://10.2.0.59:8101/api/users/me',{
+              headers: {
+                  clientToken: token
+              }
+          });
+          const json = await response.json()
+          setUserId(json.id)
+          setAuthentificate(true);
+      }
+      catch (error) {
+        alert(error)
+      }
+    }
+
     const signUpApi = async () => {
         try {
             const response = await fetch('http://10.2.0.59:8101/api/auth/signup',{
                 method:'post',
-                body: JSON.stringify({login:login,password:password,name:name,phone:phone})
+                body: JSON.stringify({login:login,password:password,name:name,phone:phone}),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
             });
             const json = await response.json();
-            console.log(json)
+            getToken(json.accessToken)
         } catch (error) {
             alert(error);
         }
@@ -31,13 +50,13 @@ const Registration = ({isAuthentificated,setAuthentificate,setRegistr}) => {
 
   return (
     <View style={styles.container}>
-      {/* <Image style={styles.image} source={require("./assets/log2.png]")} /> */}
+      <Image style={styles.image} source={require("./assets/trainLogo.png")} />
 
       {/* <StatusBar style="auto" /> */}
         <View style={styles.inputView}>
             <TextInput
                 style={styles.TextInput}
-                placeholder="Login"
+                placeholder="Логин"
                 placeholderTextColor="#003f5c"
                 onChangeText={(login) => setLogin(login)}
             />
@@ -46,7 +65,7 @@ const Registration = ({isAuthentificated,setAuthentificate,setRegistr}) => {
         <View style={styles.inputView}>
             <TextInput
                 style={styles.TextInput}
-                placeholder="Password"
+                placeholder="Пароль"
                 placeholderTextColor="#003f5c"
                 secureTextEntry={true}
                 onChangeText={(password) => setPassword(password)}
@@ -56,9 +75,8 @@ const Registration = ({isAuthentificated,setAuthentificate,setRegistr}) => {
         <View style={styles.inputView}>
             <TextInput
                 style={styles.TextInput}
-                placeholder="Name"
+                placeholder="Имя"
                 placeholderTextColor="#003f5c"
-                secureTextEntry={true}
                 onChangeText={(name) => setName(name)}
             />
         </View>
@@ -66,20 +84,21 @@ const Registration = ({isAuthentificated,setAuthentificate,setRegistr}) => {
         <View style={styles.inputView}>
             <TextInput
                 style={styles.TextInput}
-                placeholder="Phone"
-                placeholderTextColor="#003f5c"
-                secureTextEntry={true}
+                placeholder="Телефон"
+                placeholderTextColor="#666"
                 onChangeText={(phone) => setPhone(phone)}
             />
         </View>
 
-        <TouchableOpacity style={styles.loginBtn} onPress={() => setRegistr(false)}>
-            <Text style={styles.loginText}>ВЕРНУТЬСЯ</Text>
-        </TouchableOpacity>
+        <View style={styles.step}>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => setRegistr(false)}>
+              <Text style={styles.loginText}>ВЕРНУТЬСЯ</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginBtn} onPress={() => signUpApi(login,password)}>
-            <Text style={styles.loginText}>ЗАРЕГЕСТРИРОВАТЬСЯ</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => signUpApi(login,password)}>
+              <Text style={styles.loginText}>ЗАРЕГИСТРИРОВАТЬСЯ</Text>
+          </TouchableOpacity>
+        </View>
     </View>
   );
 }
@@ -88,31 +107,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 10,
     width:"100%",
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: 'center',
+    backgroundColor: "#D9D9D9",
   },
 
   image: {
-    //marginBottom: 40,
+    position:'relative',
+    width:"50%",
+    height:220,
+    top:-20,
+    resizeMode:'contain',
   },
 
   inputView: {
-    backgroundColor: "#FFC0CB",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent:'center'
+    marginTop:10,
+    shadowColor:"#000",
+    shadowOffset:{
+        width:0,
+        height:3,
+    },
+    shadowOpacity:0.3,
+    shadowRadius:10,
+    elevation:10,
+    width:"75%",
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 0,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'white',
   },
 
   TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
+    width:"100%",
+    color:'black',
     marginLeft: 20,
-    textAlign:"center"
+    textAlign:"left",
+    height:50,
   },
 
   forgot_button: {
@@ -120,14 +153,29 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 
+  step: {
+    marginTop:50,
+  },
+
   loginBtn: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#FF1493",
+
+    marginTop:10,
+    shadowColor:"#000",
+    shadowOffset:{
+        width:0,
+        height:3,
+    },
+    shadowOpacity:0.3,
+    shadowRadius:10,
+    elevation:10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'white',
+    borderRadius:39,
   },
 });
 
