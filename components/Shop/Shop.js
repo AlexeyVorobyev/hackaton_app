@@ -1,36 +1,57 @@
-import { StyleSheet, Text, View,Pressable,Image } from 'react-native';
-import { Button } from '../Button/Button';
-import { CustomText } from '../CustomText/CustomText';
+import React from 'react';
+import { StyleSheet, Text, View,Pressable,Image,TouchableOpacity } from 'react-native';
+import { ShopCards } from '../ShopCards/ShopCards';
+import { ScrollView } from 'react-native';
 
 
 const Shop = () => {
 
-    // React.useEffect(() => {
-    //     fetch('https://reqres.in/api/users')
-    //     .then(res => res.json())
-    //     .then(json => {
-    //         setUsers(json.data);
-    //         setLoading(false);
-    //     })
-    //     .catch(err => {
-    //         setLoading(true);
-    //         console.log(err);
-    //         alert("Ошибка при получении пользователя.");
-    //     })
-    // },[])
+    const [shopCardsData,setShopCardsData] = React.useState([]);
+    const [arrAmount,setAmount] = React.useState([]);
+    const [price,setPrice] = React.useState(0);
 
-    shopCardsData = []
+    const getDishesApi = async () => {
+        try {
+            const response = await fetch('http://10.2.0.59:8101/api/dish');
+            const json = await response.json();
+            setShopCardsData(json);
+            setAmount(json.map(() => 0));
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const calculatePrice = (index,val) => {
+        doubler = arrAmount.map(x => x);
+        doubler[index]+=val;
+        setAmount(doubler)
+        let sum = 0;
+        for (let i = 0; i < shopCardsData.length;i++) sum+=shopCardsData[i].price*doubler[i]
+        setPrice(sum)
+    }
+
+    React.useEffect(() =>{
+        getDishesApi()
+    },[])
 
     return (
       <>
       <View style={styles.ProfileHeader}>
         <Text style={styles.profText}>Магазин</Text>
-        <Image
-            source={require('./assets/rzd.jpg')}
-        />
+        <Image source={require('./assets/rzd.jpg')}/>
       </View>
       <View style={styles.ProfileBody}>
-        
+        <ScrollView style={styles.scroll}>
+            <View style={styles.wrapper}>
+                <ShopCards data={shopCardsData} arrAmount={arrAmount} setAmount={setAmount} calculatePrice={calculatePrice}/>
+            </View>
+        </ScrollView>
+      </View>
+      <View style={styles.buttonZone}>
+        <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Купить</Text>
+            <Text style={styles.buttonText}>{Math.round(price,2)} Р</Text>
+        </TouchableOpacity>
       </View>
       </>
     )
@@ -39,7 +60,7 @@ const Shop = () => {
 const styles = StyleSheet.create({
     ProfileHeader: {
         width:"100%",
-        flex: 0.07,
+        flex: 0.0776,
         backgroundColor: '#fff',
         alignItems: 'center',
         shadowColor:"#000",
@@ -56,58 +77,53 @@ const styles = StyleSheet.create({
     },
     ProfileBody: {
         width:"100%",
-        flex:0.93,
-        padding:10,
-    },
-    CardHuman:{
-        flex:1,
-        flexDirection:'column',
-        alignItems:"center",
-        width:"100%",
-    },
-    button:{
-        marginTop:10,
-        shadowColor:"#000",
-        shadowOffset:{
-            width:0,
-            height:3,
-        },
-        shadowOpacity:0.3,
-        shadowRadius:10,
-        elevation:10,
-        width:"75%",
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
-        elevation: 3,
-        backgroundColor: 'white',
-        borderRadius:39,
-    },
-    head_div:{
-        marginTop:35,
-        width:190,
-        height:190,
-        shadowColor:"#000",
-        shadowOffset:{
-            width:0,
-            height:3,
-        },
-        backgroundColor:"#DDD",
-        shadowOpacity:0.3,
-        shadowRadius:10,
-        borderRadius:200,
-    },
-    name: {
-        marginTop:20,
-        fontSize:40,
-        fontWeight: 700,
+        flex:0.85,
     },
     profText: {
         fontSize:30,
         fontWeight:700
-    }
+    },
+    wrapper:{
+        padding:10,
+        paddingTop:0,
+    },
+    button: {
+        width:"100%",
+        flexDirection:'row',
+        backgroundColor: "#FF0B0B",
+        borderRadius:50,
+        flex:0.5,
+        justifyContent:'space-between',
+        paddingLeft:30,
+        paddingRight:30,
+        alignItems:'center'
+    },
+    buttonZone: {
+        backgroundColor:"#fff",
+        justifyContent:'center',
+        alignItems:'center',
+        flex:0.15,
+        paddingLeft:46,
+        paddingRight:46,
+        shadowColor:"#000",
+        shadowOffset:{
+            width:0,
+            height:3,
+        },
+        shadowOpacity:0.3,
+        shadowRadius:10,
+        elevation:5,
+        padding:10,
+    },
+    buttonText: {
+        fontSize:20,
+        color:"#fff",
+        fontWeight:700,
+        marginBottom:4,
+    },
+    scroll: {
+
+    },
 })
 
 export {Shop}

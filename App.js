@@ -1,16 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable,Image, TouchableOpacity } from 'react-native';
-import { Button } from '../hackaton_app/components/Button/Button';
 import { Profile } from './components/Profile/Profile';
 import { Shop } from './components/Shop/Shop';
-import Icon from 'react-native-vector-icons/Ionicons';
-
-
-const Page1 = () => {
-  return (
-    <Text>1</Text>
-  )
-}
+import { Authentification } from './components/Authentification/Authentification';
+import { Registration } from './components/Registration/Registration';
+import { Main } from './components/Main/Main';
 
 const Page2 = () => {
   return (
@@ -18,15 +12,14 @@ const Page2 = () => {
   )
 }
 
-export default function App() {
+const Authentificated = () => {
 
   const [router,setRouter] = React.useState([true,false,false,false])
 
   return (
-    <View style={styles.container}>
-      <View style={styles.upper}/>
-      <View style={styles.body}>
-        {router[0] && <Page1/>}
+    <>
+    <View style={styles.body}>
+        {router[0] && <Main/>}
         {router[1] && <Page2/>}
         {router[2] && <Shop/>}
         {router[3] && <Profile/>}
@@ -45,6 +38,31 @@ export default function App() {
           <Image source={require('./assets/icons/user.png')} style={styles.buttonImg} />
         </TouchableOpacity>
       </View>
+    </>
+  )
+}
+
+export default function App() {
+
+  const [isAuthentificated,setAuthentificate] = React.useState(false)
+  const [isRegistr,setRegistr] = React.useState(false)
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.upper}/>
+      {true  && <Authentificated/>}
+      {/* {!isAuthentificated && <>
+        {!isRegistr && <Authentification 
+          isAuthentificated={isAuthentificated} 
+          setAuthentificate={setAuthentificate}
+          setRegistr={setRegistr}
+        />}
+        {isRegistr && <Registration 
+          isAuthentificated={isAuthentificated} 
+          setAuthentificate={setAuthentificate}
+          setRegistr={setRegistr}
+        />}
+      </>} */}
     </View>
   );
 }
@@ -56,6 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navigation: {
+    backgroundColor:"#fff",
     flex:1.4,
     paddingLeft:25,
     paddingRight:25,
@@ -64,12 +83,12 @@ const styles = StyleSheet.create({
     width:"100%",
     flexDirection:"row",
     justifyContent:'space-between',
-    shadowColor:"#000",
+    shadowColor:"#555",
     shadowOffset:{
         width:0,
-        height:3,
+        height:4,
     },
-    shadowOpacity:0.3,
+    shadowOpacity:0.1,
     shadowRadius:10,
     elevation:10,
   },
@@ -85,7 +104,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   upper: {
-    flex:1,
+    height:40,
   },
   button: {
     alignItems: 'center',

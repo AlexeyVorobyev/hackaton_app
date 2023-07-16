@@ -1,53 +1,38 @@
-import { StyleSheet, Text, View,Pressable,Image } from 'react-native';
-import { Button } from '../Button/Button';
-import { CustomText } from '../CustomText/CustomText';
+import { StyleSheet, Text, View,Pressable,Image,TouchableOpacity } from 'react-native';
+import React from 'react';
 
 
-const ShopCards = ({data}) => {
+const ShopCards = ({data,arrAmount,setAmount,calculatePrice}) => {
 
-    data = [
-        {
-            name:"lipton",
-            price:"123",
-            amount:0,
-            description:"dasdadasd"
-        },
-        {
-            name:"lipton",
-            price:"123",
-            amount:0,
-            description:"dasdadasd"
-        },
-        {
-            name:"lipton",
-            price:"123",
-            amount:0,
-            description:"dasdadasd"
-        }
-    ]
-
-    const ShopCard = (info) => {
-        
+    const ShopCard = (info,index) => {
         return(
-            <View style={styles.card} >
+            <View style={styles.card} key={info.id} >
                 <View style={styles.cardWrap_1}>
-                    <Image style={styles.cardImg}/>
+                    <Image style={styles.cardImg} source={{uri: info.image}}/>
                 </View>
                 <View style={styles.cardWrap_2}>
                     <Text style={styles.cardDescription_1}>{info.name}</Text>
                     <View style={styles.cardWrap_3}>
                         <View style={styles.cardWrap_4}>
                             <Text style={styles.cardDescription_2}>{info.description}</Text>
-                            <Text style={styles.price}>{info.price}</Text>
+                            <Text style={styles.price}>{info.price + " Р"}</Text>
                         </View>
                         <View style={styles.cardWrap_5}>
-                            <TouchableOpacity style={styles.button}>
-                                <Image source={require('./assets/icons/user.png')} style={styles.buttonImg} />
-                            </TouchableOpacity>
-                            <Text style={styles.cardAmount}></Text>
-                            <TouchableOpacity style={styles.button}>
-                                <Image source={require('./assets/icons/user.png')} style={styles.buttonImg} />
-                            </TouchableOpacity>
+                            <View style={styles.cardWrap_6}>
+                                {arrAmount[index] != 0 && <TouchableOpacity style={styles.button} onPress={() => 
+                                {
+                                    calculatePrice(index,-1);
+                                }}>
+                                    <Image source={require('./assets/minus.png')} alt='hovno' style={styles.buttonImg}/>
+                                </TouchableOpacity>}
+                                {arrAmount[index] != 0 && <Text style={styles.cardAmount}>{arrAmount[index]}</Text>}
+                                <TouchableOpacity style={styles.button} onPress={() => 
+                                {
+                                    calculatePrice(index,1);
+                                }}>
+                                    <Image source={require('./assets/plus.png')} alt='hovno' style={styles.buttonImg} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -57,50 +42,92 @@ const ShopCards = ({data}) => {
 
     return (
       <>
-        
+        {data.map((info,index) => {
+            return ShopCard(info,index)
+        })}
       </>
     )
 }
 
 const styles = StyleSheet.create({
     card:{
-
+        shadowColor:"#999",
+        shadowOffset:{
+            width:0,
+            height:3,
+        },
+        shadowOpacity:0.1,
+        shadowRadius:10,
+        backgroundColor:"#fff",
+        elevation:8,
+        flex:1,
+        marginTop:35,
+        width:"100%",
+        padding:25,
+        paddingLeft:0,
+        flexDirection:'row',
+        gap:20,
     },
     cardWrap_1:{
-
+        flex:0.3
+    },
+    cardImg: {
+        flex:1,
+        resizeMode:'contain'
     },
     cardWrap_2:{
-
+        flex:0.7
     },
     cardWrap_3:{
-
+        flex:1,
+        paddingTop:40,
+        flexDirection:"row"
     },
     cardWrap_4:{
-
+        justifyContent:'space-between',
+        flex:0.6,
     },
     cardWrap_5:{
-
+        flex:0.4,
+        flexDirection:'row',
+        alignItems:"flex-end",
+        justifyContent:"flex-end"
+    },
+    cardWrap_6:{
+        marginLeft:10,
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'flex-end',
+        alignItems:'center',
     },
     cardDescription_1:{
-
+        fontSize: 20,
+        fontWeight: 600,
+        margin:0,
     },
     cardDescription_2:{
-
-    },
-    cardImg:{
-
+        color: "#A7A7A7",
+        fontSize: 20,
+        fontWeight: 600,
     },
     button:{
-        
+        backgroundColor:"#FF0B0B",
+        borderRadius:20,
     },
     buttonImg:{
-
+        width:30,
+        height:30,
     },
     price: {
-
+        fontSize: 20,
+        fontWeight: 600,
+        margin:0,
     },
     cardAmount:{
-
+        marginLeft:5,
+        marginRight:5,
+        fontSize: 22,
+        fontWeight: 700,
     }
 })
 
