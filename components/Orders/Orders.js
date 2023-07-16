@@ -61,7 +61,7 @@ const Orders = ({userId}) => {
 
     return(
         <View>
-            {ordersData.map((elem) => <Order info={elem}/>)}
+            {ordersData.map((elem) => <Order info={elem} key={elem.id}/>)}
         </View>
     )
 }

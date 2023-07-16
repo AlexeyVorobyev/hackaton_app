@@ -4,12 +4,28 @@ import { ShopCards } from '../ShopCards/ShopCards';
 import { ScrollView } from 'react-native';
 
 
-const Main= () => {
+const Main= ({userId}) => {
+
+    const [userData,setUserData] = React.useState([])
+
+    const signUpApi = async (userId) => {
+        try {
+            const response = await fetch(`http://10.2.0.59:8101/api/users/me/${userId}`)
+            const json = await response.json();
+            setUserData(json);
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    React.useEffect(() => {
+        signUpApi(userId)
+    },[])
 
     return (
       <>
       <View style={styles.ProfileHeader}>
-        <Text style={styles.profText}>Доброе утро NAME</Text>
+        <Text style={styles.profText}>Доброе утро {userData.fullName}</Text>
       </View>
       <View style={styles.ProfileBody}>
         <ScrollView style={styles.scroll}>
@@ -55,7 +71,7 @@ const styles = StyleSheet.create({
         flex:1
     },
     cardHeader:{
-        color:"#FF0B0B",
+        color:"#9DC3E7",
         fontSize: 26,
         fontWeight: 700,
         marginTop:-10,
@@ -85,7 +101,7 @@ const styles = StyleSheet.create({
     },
     button: {
         flexDirection:'row',
-        backgroundColor: "#FF0B0B",
+        backgroundColor: "#9DC3E7",
         borderRadius:50,
         justifyContent:'space-between',
         alignItems:'center',

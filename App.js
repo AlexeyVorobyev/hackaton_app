@@ -14,7 +14,7 @@ const Authentificated = ({userId}) => {
   return (
     <>
     <View style={styles.body}>
-        {router[0] && <Main/>}
+        {router[0] && <Main userId={userId}/>}
         {router[1] && <Train/>}
         {router[2] && <Shop userId={userId} setRouter={setRouter}/>}
         {router[3] && <Profile userId={userId}/>}

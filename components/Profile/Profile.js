@@ -3,6 +3,7 @@ import { Button } from '../Button/Button';
 import { CustomText } from '../CustomText/CustomText';
 import React from 'react';
 import { Orders } from '../Orders/Orders';
+import { Actions } from '../Actions/Actions';
 
 
 const Profile = ({userId}) => {
@@ -29,6 +30,7 @@ const Profile = ({userId}) => {
       <>
       <View style={styles.ProfileHeader}>
         <Text style={styles.profText}>Профиль</Text>
+        <></>
       </View>
       <View style={styles.ProfileBody}>
         {router[0] && <View style={styles.CardHuman}>
@@ -45,13 +47,18 @@ const Profile = ({userId}) => {
             <TouchableOpacity style={styles.button} onPress={() => setRouter([false,false,false,true,false])}>
                 <Text style={styles.loginText}>Мои заказы</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => setRouter([false,false,false,false,true])}>
                 <Text style={styles.loginText}>Персональные акции</Text>
             </TouchableOpacity>
         </View>}
         {router[3] && <View>
             <ScrollView>
                 <Orders userId={userId}></Orders>
+            </ScrollView>
+        </View>}
+        {router[4] && <View>
+            <ScrollView>
+                <Actions></Actions>
             </ScrollView>
         </View>}
       </View>
