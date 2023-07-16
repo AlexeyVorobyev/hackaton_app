@@ -5,12 +5,7 @@ import { Shop } from './components/Shop/Shop';
 import { Authentification } from './components/Authentification/Authentification';
 import { Registration } from './components/Registration/Registration';
 import { Main } from './components/Main/Main';
-
-const Page2 = () => {
-  return (
-    <Text>2</Text>
-  )
-}
+import { Train } from './components/Train/Train';
 
 const Authentificated = () => {
 
@@ -20,7 +15,7 @@ const Authentificated = () => {
     <>
     <View style={styles.body}>
         {router[0] && <Main/>}
-        {router[1] && <Page2/>}
+        {router[1] && <Train/>}
         {router[2] && <Shop/>}
         {router[3] && <Profile/>}
       </View>
@@ -91,6 +86,13 @@ const styles = StyleSheet.create({
     shadowOpacity:0.1,
     shadowRadius:10,
     elevation:10,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    shadowColor:"#000",
+    elevation:10,
+    flexDirection:"row",
+    justifyContent:"space-between",
+    padding:10,
   },
   body: {
     width:"100%",

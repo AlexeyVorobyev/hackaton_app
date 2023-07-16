@@ -16,8 +16,29 @@ const Main= () => {
             <View style={styles.wrapper}>
                 <Text style={styles.header}>Куда отправимся сегодня?</Text>
                 <View style={styles.card}>
-                    <Text>Где лучше провести лето?</Text>
-                    <Text>Лучшие курорты России ждут вас!</Text>
+                    <Text style={styles.cardHeader}>Где провести лето?</Text>
+                    <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
+                    <TouchableOpacity style={styles.button}>
+                        <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.card}>
+                    <Text style={styles.cardHeader}>Где провести лето?</Text>
+                    <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
+                    <TouchableOpacity style={styles.button}>
+                        <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.card}>
+                    <Text style={styles.cardHeader}>Где провести лето?</Text>
+                    <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
+                    <TouchableOpacity style={styles.button}>
+                        <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.card}>
+                    <Text style={styles.cardHeader}>Где провести лето?</Text>
+                    <Text style={styles.cardParagraph}>Лучшие курорты России ждут вас!</Text>
                     <TouchableOpacity style={styles.button}>
                         <Image source={require('./assets/arrow.png')} alt='hovno' style={styles.buttonImg} />
                     </TouchableOpacity>
@@ -30,6 +51,15 @@ const Main= () => {
 }
 
 const styles = StyleSheet.create({
+    scroll: {
+        flex:1
+    },
+    cardHeader:{
+        color:"#FF0B0B",
+        fontSize: 26,
+        fontWeight: 700,
+        marginTop:-10,
+    },
     ProfileHeader: {
         width:"100%",
         flex: 0.07,
@@ -43,7 +73,7 @@ const styles = StyleSheet.create({
     },
     ProfileBody: {
         width:"100%",
-        flex:0.85,
+        flex:0.93,
     },
     profText: {
         fontSize:30,
@@ -54,27 +84,33 @@ const styles = StyleSheet.create({
         paddingTop:20,
     },
     button: {
-        width:"100%",
         flexDirection:'row',
         backgroundColor: "#FF0B0B",
         borderRadius:50,
-        flex:0.5,
         justifyContent:'space-between',
-        paddingLeft:30,
-        paddingRight:30,
-        alignItems:'center'
+        alignItems:'center',
+        position:'absolute',
+        bottom:20,
+        right:20,
+        padding:10,
     },
     header: {
-        marginTop:30,
         fontSize: 26,
         fontWeight: 500
     },
     card:{
+        position:'relative',
         shadowColor:"#BBB",
         shadowOffset:{
             width:0,
             height:3,
         },
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        shadowColor:"#000",
+        elevation:10,
+        flexDirection:"row",
+        justifyContent:"space-between",
         shadowOpacity:0.1,
         shadowRadius:10,
         elevation:5,
@@ -83,10 +119,17 @@ const styles = StyleSheet.create({
         marginTop:35,
         width:"100%",
         padding:25,
-        paddingLeft:0,
-        flexDirection:'row',
+        paddingBottom:75,
+        paddingTop:20,
+        flexDirection:'column',
         gap:20,
+        justifyContent:'center',
+        alignItems:"center"
     },
+    cardParagraph:{
+        fontSize: 16,
+        marginTop:-6,
+    }
 })
 
 export {Main}
